@@ -1,0 +1,43 @@
+{
+    "name": "fazland/elastica-odm-bundle",
+    "description": "Elastica ODM Bundle",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Massimiliano Braglia",
+            "email": "massimiliano.braglia@fazland.com"
+        },
+        {
+            "name": "Alessandro Chitolina",
+            "email": "alessandro.chitolina@fazland.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "fazland/elastica-odm": "dev-master",
+        "kcs/metadata": "^2.1",
+        "symfony/config": "^4.0",
+        "symfony/dependency-injection": "^4.0",
+        "symfony/framework-bundle": "^4.0"
+    },
+    "require-dev": {
+        "symfony/cache": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Fazland\\ODM\\ElasticaBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Fazland\\ODM\\ElasticaBundle\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "archive": {
+        "exclude": ["tests", "vendor", ".php_cs", ".gitignore", "phpunit.xml.dist", "README.md"]
+    }
+}

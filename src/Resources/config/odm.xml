@@ -1,0 +1,95 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults autowire="true" autoconfigure="true" />
+
+        <instanceof id="Fazland\ODM\Elastica\Type\TypeInterface">
+            <tag name="elastica.type" />
+        </instanceof>
+
+        <service id="Elastica\Client" class="Elastica\Client">
+            <argument type="collection">
+                <argument key="url">%fazland_elastica_odm.connection.url%</argument>
+                <argument key="host">%fazland_elastica_odm.connection.host%</argument>
+                <argument key="port">%fazland_elastica_odm.connection.port%</argument>
+                <argument key="connectTimeout">%fazland_elastica_odm.connection.connect_timeout%</argument>
+                <argument key="timeout">%fazland_elastica_odm.connection.timeout%</argument>
+            </argument>
+            <argument key="logger">%fazland_elastica_odm.connection.logger%</argument>
+        </service>
+
+        <service id="Fazland\ODM\ElasticaBundle\Database" class="Fazland\ODM\ElasticaBundle\Database">
+            <bind key="$suffix">%fazland_elastica_odm.odm.index_suffix%</bind>
+        </service>
+
+        <service id="fazland_elastica_odm.proxy_factory" class="ProxyManager\Factory\LazyLoadingGhostFactory" />
+
+        <service id="fazland_elastica_odm.metadata_cache" class="Doctrine\Common\Cache\FilesystemCache">
+            <argument key="directory">%kernel.cache_dir%/fazland_elastica_metadata</argument>
+        </service>
+
+        <service id="fazland_elastica_odm.annotation_processor_factory" class="Kcs\Metadata\Loader\Processor\ProcessorFactory">
+            <call method="registerProcessor">
+                <argument>Fazland\ODM\Elastica\Annotation\Document</argument>
+                <argument>Fazland\ODM\Elastica\Metadata\Processor\DocumentProcessor</argument>
+            </call>
+            <call method="registerProcessor">
+                <argument>Fazland\ODM\Elastica\Annotation\DocumentId</argument>
+                <argument>Fazland\ODM\Elastica\Metadata\Processor\DocumentIdProcessor</argument>
+            </call>
+            <call method="registerProcessor">
+                <argument>Fazland\ODM\Elastica\Annotation\IndexName</argument>
+                <argument>Fazland\ODM\Elastica\Metadata\Processor\IndexNameProcessor</argument>
+            </call>
+
+            <call method="registerProcessor">
+                <argument>Fazland\ODM\Elastica\Annotation\TypeName</argument>
+                <argument>Fazland\ODM\Elastica\Metadata\Processor\TypeNameProcessor</argument>
+            </call>
+
+            <call method="registerProcessor">
+                <argument>Fazland\ODM\Elastica\Annotation\Field</argument>
+                <argument>Fazland\ODM\Elastica\Metadata\Processor\FieldProcessor</argument>
+            </call>
+        </service>
+
+        <service id="fazland_elastica_odm.metadata_loader" class="Fazland\ODM\Elastica\Metadata\Loader\AnnotationLoader">
+            <argument type="service" id="fazland_elastica_odm.annotation_processor_factory" />
+            <call method="setReader">
+                <argument type="service" id="annotations.reader" />
+            </call>
+        </service>
+
+        <service id="fazland_elastica_odm.metadata_factory" class="Fazland\ODM\Elastica\Metadata\MetadataFactory">
+            <argument type="service" id="fazland_elastica_odm.metadata_loader" />
+            <argument type="service" id="fazland_elastica_odm.metadata_cache" />
+        </service>
+
+        <service id="Fazland\ODM\Elastica\Type\TypeManager" class="Fazland\ODM\Elastica\Type\TypeManager" />
+
+        <service id="fazland_elastica_odm.configuration" class="Fazland\ODM\Elastica\Configuration">
+            <call method="setProxyFactory">
+                <argument type="service" id="fazland_elastica_odm.proxy_factory" />
+            </call>
+            <call method="setMetadataFactory">
+                <argument type="service" id="fazland_elastica_odm.metadata_factory" />
+            </call>
+            <call method="setResultCache">
+                <argument type="service" id="cache.app" />
+            </call>
+            <call method="setTypeManager">
+                <argument type="service" id="Fazland\ODM\Elastica\Type\TypeManager" />
+            </call>
+        </service>
+
+        <service id="Fazland\ODM\Elastica\DocumentManager" public="true">
+            <argument type="service" id="Fazland\ODM\ElasticaBundle\Database" />
+            <argument type="service" id="fazland_elastica_odm.configuration" />
+        </service>
+
+        <service id="Fazland\ODM\Elastica\DocumentManagerInterface" alias="Fazland\ODM\Elastica\DocumentManager" />
+    </services>
+</container>

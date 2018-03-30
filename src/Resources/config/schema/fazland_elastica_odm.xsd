@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xsd:schema xmlns="http://fazland.com/schema/dic/elastica_odm"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://fazland.com/schema/dic/elastica_odm"
+            elementFormDefault="qualified">
+
+    <xsd:element name="config">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="connection" type="connection" />
+                <xsd:element name="odm" type="odm" minOccurs="0" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:complexType name="connection">
+        <xsd:sequence minOccurs="1" maxOccurs="unbounded">
+            <xsd:element name="url" type="xsd:string" />
+            <xsd:element name="host" type="xsd:string" />
+            <xsd:element name="port" type="xsd:integer" />
+            <xsd:element name="connect_timeout" type="xsd:integer" />
+            <xsd:element name="timeout" type="xsd:integer" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="odm">
+        <xsd:sequence>
+            <xsd:element name="index_suffix" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>
