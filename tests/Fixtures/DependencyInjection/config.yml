@@ -1,0 +1,14 @@
+framework:
+    test: ~
+    secret: secret
+    router:
+        resource: "%kernel.root_dir%/routing.yml"
+
+elastica_odm:
+    connection:
+        url: '%env(ES_ENDPOINT)%'
+
+    odm:
+        mappings:
+            prefix_dir: '%kernel.root_dir%/../Document'
+

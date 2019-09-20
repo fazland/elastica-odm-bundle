@@ -15,7 +15,7 @@
     </xsd:element>
 
     <xsd:complexType name="connection">
-        <xsd:sequence minOccurs="1" maxOccurs="unbounded">
+        <xsd:sequence maxOccurs="unbounded">
             <xsd:element name="url" type="xsd:string" />
             <xsd:element name="host" type="xsd:string" />
             <xsd:element name="port" type="xsd:integer" />
@@ -26,7 +26,14 @@
 
     <xsd:complexType name="odm">
         <xsd:sequence>
-            <xsd:element name="index_suffix" type="xsd:string" />
+            <xsd:element name="index_suffix" type="xsd:string" minOccurs="0" />
+            <xsd:element name="mappings" type="odm_mappings" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="odm_mappings">
+        <xsd:sequence>
+            <xsd:element name="prefix_dir" type="xsd:string" />
         </xsd:sequence>
     </xsd:complexType>
 </xsd:schema>

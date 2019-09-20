@@ -15,14 +15,16 @@
     ],
     "require": {
         "php": "^7.1",
-        "fazland/elastica-odm": "dev-master",
-        "kcs/metadata": "^2.1",
+        "fazland/elastica-odm": "^1.0",
         "symfony/config": "^4.0",
         "symfony/dependency-injection": "^4.0",
         "symfony/framework-bundle": "^4.0"
     },
     "require-dev": {
-        "symfony/cache": "^4.0"
+        "friendsofphp/php-cs-fixer": "^2.15",
+        "phpunit/phpunit": "^7.0",
+        "symfony/cache": "^4.0",
+        "symfony/yaml": "^4.0"
     },
     "autoload": {
         "psr-4": {
@@ -31,7 +33,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Fazland\\ODM\\ElasticaBundle\\Tests\\": "tests/"
+            "Tests\\": "tests/"
         }
     },
     "config": {

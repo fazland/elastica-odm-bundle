@@ -14,8 +14,13 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder(): NodeParentInterface
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('fazland_elastica_odm');
+        if (\method_exists(TreeBuilder::class, 'getRootNode')) {
+            $treeBuilder = new TreeBuilder('elastica_odm');
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            $treeBuilder = new TreeBuilder();
+            $rootNode = $treeBuilder->root('elastica_odm');
+        }
 
         $this->addConnectionSection($rootNode);
         $this->addOdmSection($rootNode);
@@ -28,13 +33,12 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('connection')
-                ->useAttributeAsKey('id')
+                ->addDefaultsIfNotSet()
+                ->isRequired()
                     ->children()
-                        ->stringNode('url')->end()
-                        ->stringNode('host')->defaultValue('localhost')->end()
-                        ->integerNode('port')->defaultNull()->end()
-                        ->integerNode('connect_timeout')->end()
-                        ->integerNode('timeout')->end()
+                        ->scalarNode('url')->isRequired()->end()
+                        ->integerNode('connect_timeout')->defaultValue(30)->end()
+                        ->integerNode('timeout')->defaultNull()->end()
                     ->end()
                 ->end()
             ->end()
@@ -47,7 +51,13 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('odm')
                     ->children()
-                        ->stringNode('index_suffix')->defaultNull()->end()
+                        ->scalarNode('index_suffix')->defaultNull()->end()
+                        ->arrayNode('mappings')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('prefix_dir')->defaultValue('%kernel.project_dir%/Document')->end()
+                            ->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end()

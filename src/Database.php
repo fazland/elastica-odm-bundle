@@ -23,7 +23,7 @@ class Database extends BaseDatabase
 
     protected function getSearchable(DocumentMetadata $class): SearchableInterface
     {
-        list($indexName, $typeName) = explode('/', $class->collectionName, 2) + [null, null];
+        [$indexName, $typeName] = \explode('/', $class->collectionName, 2) + [null, null];
 
         $searchable = $this->elasticSearch->getIndex($indexName.$this->suffix);
         if (null !== $typeName) {
