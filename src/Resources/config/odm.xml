@@ -44,6 +44,10 @@
                 <argument>Fazland\ODM\Elastica\Metadata\Processor\IndexNameProcessor</argument>
             </call>
             <call method="registerProcessor">
+                <argument>Fazland\ODM\Elastica\Annotation\Index</argument>
+                <argument>Fazland\ODM\Elastica\Metadata\Processor\IndexProcessor</argument>
+            </call>
+            <call method="registerProcessor">
                 <argument>Fazland\ODM\Elastica\Annotation\TypeName</argument>
                 <argument>Fazland\ODM\Elastica\Metadata\Processor\TypeNameProcessor</argument>
             </call>
