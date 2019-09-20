@@ -85,11 +85,12 @@
             </call>
         </service>
 
-        <service id="Fazland\ODM\Elastica\DocumentManager" public="true">
+        <service alias="fazland_elastica_odm.document_manager" id="Fazland\ODM\Elastica\DocumentManager" />
+        <service id="fazland_elastica_odm.document_manager" class="Fazland\ODM\Elastica\DocumentManager" public="true">
             <argument type="service" id="Fazland\ODM\ElasticaBundle\Database" />
             <argument type="service" id="fazland_elastica_odm.configuration" />
         </service>
 
-        <service id="Fazland\ODM\Elastica\DocumentManagerInterface" alias="Fazland\ODM\Elastica\DocumentManager" />
+        <service id="Fazland\ODM\Elastica\DocumentManagerInterface" alias="fazland_elastica_odm.document_manager" />
     </services>
 </container>
