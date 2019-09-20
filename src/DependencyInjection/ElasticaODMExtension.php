@@ -20,6 +20,7 @@ class ElasticaODMExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator([__DIR__.'/../Resources/config']));
 
         $loader->load('odm.xml');
+        $loader->load('types.xml');
         if (\class_exists(Application::class)) {
             $loader->load('console.xml');
         }

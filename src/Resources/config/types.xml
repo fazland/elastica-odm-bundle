@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults>
+            <tag name="elastica.type" />
+        </defaults>
+        
+        <service id="fazland.odm.elastica.type.binary" class="Fazland\ODM\Elastica\Type\BinaryType" />
+        <service id="fazland.odm.elastica.type.boolean" class="Fazland\ODM\Elastica\Type\BooleanType" />
+        <service id="fazland.odm.elastica.type.completion" class="Fazland\ODM\Elastica\Type\CompletionType" />
+        <service id="fazland.odm.elastica.type.date_time_immutable" class="Fazland\ODM\Elastica\Type\DateTimeImmutableType" />
+        <service id="fazland.odm.elastica.type.date_time" class="Fazland\ODM\Elastica\Type\DateTimeType" />
+        <service id="fazland.odm.elastica.type.float" class="Fazland\ODM\Elastica\Type\FloatType" />
+        <service id="fazland.odm.elastica.type.geo_point" class="Fazland\ODM\Elastica\Type\GeoPointType" />
+        <service id="fazland.odm.elastica.type.geo_shape" class="Fazland\ODM\Elastica\Type\GeoShapeType" />
+        <service id="fazland.odm.elastica.type.integer" class="Fazland\ODM\Elastica\Type\IntegerType" />
+        <service id="fazland.odm.elastica.type.ip" class="Fazland\ODM\Elastica\Type\IpType" />
+        <service id="fazland.odm.elastica.type.percolator" class="Fazland\ODM\Elastica\Type\PercolatorType" />
+        <service id="fazland.odm.elastica.type.raw" class="Fazland\ODM\Elastica\Type\RawType" />
+        <service id="fazland.odm.elastica.type.string" class="Fazland\ODM\Elastica\Type\StringType" />
+    </services>
+</container>
