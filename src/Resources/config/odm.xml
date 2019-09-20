@@ -25,7 +25,7 @@
         <service id="fazland_elastica_odm.metadata_cache" class="\Psr\Cache\CacheItemPoolInterface">
             <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache" />
             <argument>fazland_elastica_odm</argument>
-            <argument>null</argument>
+            <argument>0</argument>
             <argument /> <!-- version -->
             <argument>%kernel.cache_dir%/fazland_elastica_metadata</argument>
         </service>
