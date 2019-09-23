@@ -1,7 +1,6 @@
 {
     "name": "fazland/elastica-odm-bundle",
     "description": "Elastica ODM Bundle",
-    "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
         {
@@ -14,7 +13,7 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.3",
         "fazland/elastica-odm": "^1.0",
         "symfony/config": "^4.0",
         "symfony/dependency-injection": "^4.0",

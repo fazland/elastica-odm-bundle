@@ -30,34 +30,8 @@
             <argument>%kernel.cache_dir%/fazland_elastica_metadata</argument>
         </service>
 
-        <service id="fazland_elastica_odm.annotation_processor_factory" class="Kcs\Metadata\Loader\Processor\ProcessorFactory">
-            <call method="registerProcessor">
-                <argument>Fazland\ODM\Elastica\Annotation\Document</argument>
-                <argument>Fazland\ODM\Elastica\Metadata\Processor\DocumentProcessor</argument>
-            </call>
-            <call method="registerProcessor">
-                <argument>Fazland\ODM\Elastica\Annotation\DocumentId</argument>
-                <argument>Fazland\ODM\Elastica\Metadata\Processor\DocumentIdProcessor</argument>
-            </call>
-            <call method="registerProcessor">
-                <argument>Fazland\ODM\Elastica\Annotation\IndexName</argument>
-                <argument>Fazland\ODM\Elastica\Metadata\Processor\IndexNameProcessor</argument>
-            </call>
-            <call method="registerProcessor">
-                <argument>Fazland\ODM\Elastica\Annotation\Index</argument>
-                <argument>Fazland\ODM\Elastica\Metadata\Processor\IndexProcessor</argument>
-            </call>
-            <call method="registerProcessor">
-                <argument>Fazland\ODM\Elastica\Annotation\TypeName</argument>
-                <argument>Fazland\ODM\Elastica\Metadata\Processor\TypeNameProcessor</argument>
-            </call>
-            <call method="registerProcessor">
-                <argument>Fazland\ODM\Elastica\Annotation\Field</argument>
-                <argument>Fazland\ODM\Elastica\Metadata\Processor\FieldProcessor</argument>
-            </call>
-        </service>
-
-        <service id="fazland_elastica_odm.metadata_loader" class="Fazland\ODM\Elastica\Metadata\Loader\AnnotationLoader">
+        <service id="fazland_elastica_odm.annotation_processor_factory" class="Kcs\Metadata\Loader\Processor\ProcessorFactory" lazy="true" />
+        <service id="fazland_elastica_odm.metadata_loader" class="Fazland\ODM\Elastica\Metadata\Loader\AnnotationLoader" lazy="true">
             <argument type="service" id="fazland_elastica_odm.annotation_processor_factory" />
             <argument /> <!-- prefixDir -->
             <call method="setReader">
