@@ -4,9 +4,10 @@ namespace Tests\Fixtures\Document;
 
 use Fazland\ODM\Elastica\Annotation\Document;
 use Fazland\ODM\Elastica\Annotation\DocumentId;
+use Fazland\ODM\Elastica\Annotation\Field;
 
 /**
- * @Document()
+ * @Document("foo_index/foo_type")
  */
 class Foo
 {
@@ -16,4 +17,11 @@ class Foo
      * @DocumentId()
      */
     public $id;
+
+    /**
+     * @var string
+     *
+     * @Field()
+     */
+    public $stringField;
 }

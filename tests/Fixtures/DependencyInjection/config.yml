@@ -3,6 +3,11 @@ framework:
     secret: secret
     router:
         resource: "%kernel.root_dir%/routing.yml"
+    profiler: { only_exceptions: false }
+
+web_profiler:
+    toolbar: false
+    intercept_redirects: false
 
 elastica_odm:
     connection:
@@ -12,3 +17,16 @@ elastica_odm:
         mappings:
             prefix_dir: '%kernel.root_dir%/../Document'
 
+monolog:
+    handlers:
+        test:
+            type: test
+            level: debug
+            channels: ["!event"]
+
+services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+
+    Tests\Fixtures\DependencyInjection\Controller\TestController: ~

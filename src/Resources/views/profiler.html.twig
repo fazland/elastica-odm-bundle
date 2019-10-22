@@ -1,0 +1,91 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% import _self as helper %}
+
+{% block toolbar %}
+    {% set icon %}
+        {{ include('@ElasticaODM/Icon/elastic.svg') }}
+        <span class="sf-toolbar-value">{{ collector.querycount }}</span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Queries</b>
+            <span class="sf-toolbar-status">{{ collector.querycount }}</span>
+        </div>
+    {% endset %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: profiler_url, status: status_color }) }}
+{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <style>
+        .query-item thead th { position: relative; cursor: pointer; user-select: none; padding-right: 35px; }
+        .query-item tbody tr td:first-child { width: 115px; }
+
+        .query-item .label { float: right; padding: 1px 5px; opacity: .75; margin-left: 5px; }
+        .query-item .toggle-button { position: absolute; right: 6px; top: 6px; opacity: .5; pointer-events: none }
+        .query-item .icon svg { height: 24px; width: 24px; }
+
+        .query-item .sf-toggle-off .icon-close, .sf-toggle-on .icon-open { display: none; }
+        .query-item .sf-toggle-off .icon-open, .sf-toggle-on .icon-close { display: block; }
+
+        .query-item tbody.sf-toggle-content.sf-toggle-visible { display: table-row-group; }
+    </style>
+{% endblock %}
+
+{% block panel %}
+    <h2>Elasticsearch queries</h2>
+
+    {% if collector.logs is empty %}
+        <div class="empty">
+            <p>No queries available.</p>
+        </div>
+    {% else %}
+        <div class="sf-tabs">
+            <div class="tab">
+                <h3 class="tab-title">Queries <span class="badge">{{ collector.querycount }}</span></h3>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% macro render_queries(queries) %}
+    {% set discr = random() %}
+    {% for query in queries %}
+        <table class="query-item">
+            <thead>
+            <tr>
+                <th colspan="2" class="sf-toggle"
+                    data-toggle-selector="#query-item-{{ discr }}-{{ loop.index0 }}-details"
+                    data-toggle-initial="{{ loop.first ? 'display' }}"
+                >
+                    <span style="font-weight: bold;">{{ query.method }}</span>
+                    <span class="dump-inline">{{ profiler_dump(query.path) }}</span>
+                    <span class="label">{{ query.executionMs ms }}</span>
+
+                    <a class="toggle-button">
+                        <span class="icon icon-close">{{ include('@Twig/images/icon-minus-square.svg') }}</span>
+                        <span class="icon icon-open">{{ include('@Twig/images/icon-plus-square.svg') }}</span>
+                    </a>
+                </th>
+            </tr>
+            </thead>
+            <tbody id="query-item-{{ discr }}-{{ loop.index0 }}-details" class="sf-toggle-content">
+            <tr>
+                <td class="text-bold">Data</td>
+                <td>{{ profiler_dump(query.data) }}</td>
+            </tr>
+            {% if query.response is not empty %}
+                <tr>
+                    <td class="text-bold">Response</td>
+                    <td>
+                        {{ profiler_dump(query.response) }}
+                    </td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endmacro %}

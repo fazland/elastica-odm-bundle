@@ -11,7 +11,7 @@ class ElasticaODMBundleTest extends TestCase
     /**
      * @group functional
      */
-    public function testApplyShouldFillRequestAttributes(): void
+    public function testCanBoot(): void
     {
         $kernel = new AppKernel('test', true);
         $kernel->boot();
