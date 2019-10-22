@@ -1,21 +1,33 @@
 {% extends '@WebProfiler/Profiler/layout.html.twig' %}
 
-{% import _self as helper %}
-
 {% block toolbar %}
-    {% set icon %}
-        {{ include('@ElasticaODM/Icon/elastic.svg') }}
-        <span class="sf-toolbar-value">{{ collector.querycount }}</span>
-    {% endset %}
+    {% if collector.querycount > 0 %}
+        {% set icon %}
+            {{ include('@ElasticaODM/Icon/elastic.svg') }}
+            <span class="sf-toolbar-value">{{ collector.querycount }}</span>
+        {% endset %}
 
-    {% set text %}
-        <div class="sf-toolbar-info-piece">
-            <b>Queries</b>
-            <span class="sf-toolbar-status">{{ collector.querycount }}</span>
-        </div>
-    {% endset %}
+        {% set text %}
+            <div class="sf-toolbar-info-piece">
+                <b>Queries</b>
+                <span class="sf-toolbar-status">{{ collector.querycount }}</span>
+            </div>
+        {% endset %}
 
-    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: profiler_url, status: status_color }) }}
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: profiler_url, status: status_color }) }}
+    {% endif %}
+{% endblock %}
+
+{% block menu %}
+    <span class="label{{ collector.queries is empty ? ' disabled' }}">
+        <span class="icon">{{ include('@ElasticaODM/Icon/elastic.svg') }}</span>
+        <strong>Elastica ODM</strong>
+        {% if collector.querycount > 0 %}
+            <span class="count">
+                <span>{{ collector.querycount }}</span>
+            </span>
+        {% endif %}
+    </span>
 {% endblock %}
 
 {% block head %}
@@ -36,9 +48,25 @@
 {% endblock %}
 
 {% block panel %}
-    <h2>Elasticsearch queries</h2>
+    {% import _self as helper %}
 
-    {% if collector.logs is empty %}
+    <h2>Elastica ODM</h2>
+
+    <h2>Query Metrics</h2>
+
+    <div class="metrics">
+        <div class="metric">
+            <span class="value">{{ collector.querycount|default(0) }}</span>
+            <span class="label">Database Queries</span>
+        </div>
+
+        <div class="metric">
+            <span class="value">{{ '%0.0f'|format(collector.time) }} ms</span>
+            <span class="label">Query time</span>
+        </div>
+    </div>
+
+    {% if collector.queries is empty %}
         <div class="empty">
             <p>No queries available.</p>
         </div>
@@ -46,6 +74,7 @@
         <div class="sf-tabs">
             <div class="tab">
                 <h3 class="tab-title">Queries <span class="badge">{{ collector.querycount }}</span></h3>
+                {{ helper.render_queries(collector.queries) }}
             </div>
         </div>
     {% endif %}
@@ -62,19 +91,14 @@
                     data-toggle-initial="{{ loop.first ? 'display' }}"
                 >
                     <span style="font-weight: bold;">{{ query.method }}</span>
-                    <span class="dump-inline">{{ profiler_dump(query.path) }}</span>
-                    <span class="label">{{ query.executionMs ms }}</span>
-
-                    <a class="toggle-button">
-                        <span class="icon icon-close">{{ include('@Twig/images/icon-minus-square.svg') }}</span>
-                        <span class="icon icon-open">{{ include('@Twig/images/icon-plus-square.svg') }}</span>
-                    </a>
+                    <span class="dump-inline">{{ query.path }}</span>
+                    <span class="label">{{ query.executionMs }} ms</span>
                 </th>
             </tr>
             </thead>
             <tbody id="query-item-{{ discr }}-{{ loop.index0 }}-details" class="sf-toggle-content">
             <tr>
-                <td class="text-bold">Data</td>
+                <td class="text-bold">Query</td>
                 <td>{{ profiler_dump(query.data) }}</td>
             </tr>
             {% if query.response is not empty %}
