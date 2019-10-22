@@ -1,13 +1,19 @@
 language: php
 
 cache:
-  directories:
-    - $HOME/.composer/cache
+    directories:
+        - $HOME/.composer/cache
+
+env:
+    - 'ES_ENDPOINT=http://localhost:9200'
 
 matrix:
-  fast_finish: true
-  include:
-    - php: 7.3
+    fast_finish: true
+    include:
+        - php: 7.3
+
+before_install:
+    - curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.3.0.deb && sudo dpkg -i --force-confnew elasticsearch-6.3.0.deb && sudo service elasticsearch restart
 
 before_script:
     - composer self-update
