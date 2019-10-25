@@ -9,9 +9,10 @@ use Tests\Fixtures\Document\Foo;
 
 class TestController extends AbstractController
 {
-    public function testAction(DocumentManagerInterface $documentManager)
+    public function testAction(DocumentManagerInterface $documentManager): Response
     {
-        $documentManager->persist($foo = new Foo());
+        $foo = new Foo();
+        $documentManager->persist($foo);
         $foo->stringField = 'test';
 
         $documentManager->flush();

@@ -80,7 +80,7 @@ class ElasticaDataCollector extends DataCollector
         return $this->data['queries'];
     }
 
-    public function getTime()
+    public function getTime(): int
     {
         $time = 0;
         foreach ($this->data['queries'] as $query) {
@@ -93,7 +93,7 @@ class ElasticaDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'elastica_odm';
     }

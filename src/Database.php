@@ -21,6 +21,9 @@ class Database extends BaseDatabase
         parent::__construct($elasticSearch);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getSearchable(DocumentMetadata $class): SearchableInterface
     {
         [$indexName, $typeName] = \explode('/', $class->collectionName, 2) + [null, null];

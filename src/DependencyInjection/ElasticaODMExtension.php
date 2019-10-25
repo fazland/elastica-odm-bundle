@@ -38,13 +38,15 @@ class ElasticaODMExtension extends Extension
 
         $container->setParameter('fazland_elastica_odm.odm.index_suffix', $config['odm']['index_suffix']);
 
-        $container->getDefinition('fazland_elastica_odm.metadata_cache')
-            ->replaceArgument(2, new Parameter('container.build_id'));
+        $container
+            ->getDefinition('fazland_elastica_odm.metadata_cache')
+            ->replaceArgument(2, new Parameter('container.build_id'))
+        ;
 
         $annotationFactory = $container->findDefinition('fazland_elastica_odm.annotation_processor_factory');
         if (\method_exists(ProcessorFactory::class, 'registerProcessors')) {
-            $processorRefl = new \ReflectionClass(Processor\IndexProcessor::class);
-            $annotationFactory->addMethodCall('registerProcessors', [ \dirname($processorRefl->getFileName()) ]);
+            $processorReflectionClass = new \ReflectionClass(Processor\IndexProcessor::class);
+            $annotationFactory->addMethodCall('registerProcessors', [ \dirname($processorReflectionClass->getFileName()) ]);
         } else {
             $annotationFactory->addMethodCall('registerProcessor', [ Annotation\Document::class, Processor\DocumentProcessor::class ]);
             $annotationFactory->addMethodCall('registerProcessor', [ Annotation\DocumentId::class, Processor\DocumentIdProcessor::class ]);

@@ -16,8 +16,10 @@ final class ElasticaODMBundle extends Bundle
      */
     public function build(ContainerBuilder $container): void
     {
-        $container->registerForAutoconfiguration(TypeInterface::class)
-            ->addTag('elastica.type');
+        $container
+            ->registerForAutoconfiguration(TypeInterface::class)
+            ->addTag('elastica.type')
+        ;
 
         $container
             ->addCompilerPass(new AddElasticaTypesCompilerPass())

@@ -8,13 +8,19 @@ use Tests\Fixtures\DependencyInjection\AppKernel;
 
 class ElasticaDataCollectorTest extends WebTestCase
 {
-    public static function setUpBeforeClass()
+    /**
+     * {@inheritdoc}
+     */
+    public static function setUpBeforeClass(): void
     {
         $fs = new Filesystem();
         $fs->remove(__DIR__.'/../../../var/cache');
         $fs->remove(__DIR__.'/../../../var/logs');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected static function getKernelClass(): string
     {
         return AppKernel::class;

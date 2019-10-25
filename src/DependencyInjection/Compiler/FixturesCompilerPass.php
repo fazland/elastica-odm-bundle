@@ -8,8 +8,11 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class FixturesCompilerPass implements CompilerPassInterface
 {
-    const FIXTURE_TAG = 'elastica.fixture';
+    public const FIXTURE_TAG = 'elastica.fixture';
 
+    /**
+     * {@inheritdoc}
+     */
     public function process(ContainerBuilder $container): void
     {
         if (! $container->hasDefinition('elastica.fixtures.loader')) {
