@@ -1,4 +1,6 @@
 language: php
+sudo: false
+dist: xenial
 
 cache:
     directories:
@@ -10,18 +12,27 @@ env:
 matrix:
     fast_finish: true
     include:
-        - php: 7.3
+        - stage: Test
+          php: 7.3
+          env: PHPUNIT_FLAGS='--coverage-clover=coverage.clover'
+        - stage: Test
+          php: 7.3
+          env: SYMFONY_VERSION=4.4.*
+        - stage: Test
+          php: 7.3
+          env: SYMFONY_VERSION=4.3.*
 
 before_install:
     - curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.3.0.deb && sudo dpkg -i --force-confnew elasticsearch-6.3.0.deb && sudo service elasticsearch restart
+    - composer self-update
+    - if [ "$SYMFONY_VERSION" != "" ]; then composer require --dev --no-update symfony/messenger=$SYMFONY_VERSION; fi
+    - composer require fazland/elastica-odm dev-master --no-update
 
 before_script:
-    - composer self-update
-    - composer require fazland/elastica-odm dev-master --no-update
     - composer install --no-progress --no-suggest
 
 script:
-    - if [[ "$TRAVIS_PHP_VERSION" == "7.3" ]]; then vendor/bin/phpunit --coverage-clover=coverage.clover; else vendor/bin/phpunit; fi
+    - vendor/bin/phpunit $PHPUNIT_FLAGS
 
 after_success:
     - if [ -f coverage.clover ]; then wget https://scrutinizer-ci.com/ocular.phar; fi
