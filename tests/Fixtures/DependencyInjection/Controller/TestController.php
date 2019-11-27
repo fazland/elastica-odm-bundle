@@ -19,6 +19,6 @@ class TestController extends AbstractController
 
         $documents = $documentManager->getRepository(Foo::class)->findAll();
 
-        return new Response(\count($documents));
+        return new Response((string) \count($documents));
     }
 }

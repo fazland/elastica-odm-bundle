@@ -2,8 +2,10 @@
 
 namespace Fazland\ODM\ElasticaBundle\DependencyInjection;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Fazland\ODM\Elastica\Annotation;
 use Fazland\ODM\Elastica\Metadata\Processor;
+use Kcs\Metadata\Loader\Processor\Annotation\Processor as MetadataProcessor;
 use Kcs\Metadata\Loader\Processor\ProcessorFactory;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Application;
@@ -43,9 +45,15 @@ class ElasticaODMExtension extends Extension
             ->replaceArgument(2, new Parameter('container.build_id'))
         ;
 
+        $annotationReader = \class_exists(AnnotationReader::class) ? new AnnotationReader() : null;
         $annotationFactory = $container->findDefinition('fazland_elastica_odm.annotation_processor_factory');
-        if (\method_exists(ProcessorFactory::class, 'registerProcessors')) {
-            $processorReflectionClass = new \ReflectionClass(Processor\IndexProcessor::class);
+        $processorReflectionClass = new \ReflectionClass(Processor\IndexProcessor::class);
+        if (
+            null !== $annotationReader &&
+            \class_exists(MetadataProcessor::class) &&
+            \method_exists(ProcessorFactory::class, 'registerProcessors') &&
+            null !== $annotationReader->getClassAnnotation($processorReflectionClass, MetadataProcessor::class)
+        ) {
             $annotationFactory->addMethodCall('registerProcessors', [ \dirname($processorReflectionClass->getFileName()) ]);
         } else {
             $annotationFactory->addMethodCall('registerProcessor', [ Annotation\Document::class, Processor\DocumentProcessor::class ]);

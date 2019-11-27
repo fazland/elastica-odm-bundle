@@ -36,4 +36,14 @@ abstract class TestKernel extends Kernel
             $this->container->get('cache_warmer')->warmUp($this->container->getParameter('kernel.cache_dir'));
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getKernelParameters(): array
+    {
+        return parent::getKernelParameters() + [
+            'kernel.root_dir' => \dirname((new \ReflectionClass(static::class))->getFileName()),
+        ];
+    }
 }
