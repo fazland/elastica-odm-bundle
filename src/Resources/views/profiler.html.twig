@@ -74,9 +74,30 @@
         <div class="sf-tabs">
             <div class="tab">
                 <h3 class="tab-title">Queries <span class="badge">{{ collector.querycount }}</span></h3>
-                {{ helper.render_queries(collector.queries) }}
+                <div class="tab-content">
+                    {{ helper.render_queries(collector.queries) }}
+                </div>
             </div>
         </div>
+
+        <script>
+            (function () {
+                window.toggleJson = function (event, target) {
+                    event.preventDefault();
+
+                    var jsonElement = document.getElementById(target + '-json');
+                    var dumpElement = document.getElementById(target + '-dump');
+
+                    if (jsonElement.style.display === 'none') {
+                        jsonElement.style.display = 'block';
+                        dumpElement.style.display = 'none';
+                    } else {
+                        jsonElement.style.display = 'none';
+                        dumpElement.style.display = 'inline';
+                    }
+                }
+            }());
+        </script>
     {% endif %}
 {% endblock %}
 
@@ -86,7 +107,7 @@
         <table class="query-item">
             <thead>
             <tr>
-                <th colspan="2" class="sf-toggle"
+                <th colspan="3" class="sf-toggle"
                     data-toggle-selector="#query-item-{{ discr }}-{{ loop.index0 }}-details"
                     data-toggle-initial="{{ loop.first ? 'display' }}"
                 >
@@ -99,14 +120,20 @@
             <tbody id="query-item-{{ discr }}-{{ loop.index0 }}-details" class="sf-toggle-content">
             <tr>
                 <td class="text-bold">Query</td>
-                <td>{{ profiler_dump(query.data) }}</td>
+                <td>
+                    <span id="query-item-{{ discr }}-{{ loop.index0 }}-query-dump">{{ profiler_dump(query.data) }}</span>
+                    <pre id="query-item-{{ discr }}-{{ loop.index0 }}-query-json" style="display: none">{{ query.data.getValue(true)|json_encode(128) }}</pre>
+                </td>
+                <td style="text-align: right"><a href="#" onclick="toggleJson(event, 'query-item-{{ discr }}-{{ loop.index0 }}-query')">Show/hide JSON</a></td>
             </tr>
             {% if query.response is not empty %}
                 <tr>
                     <td class="text-bold">Response</td>
                     <td>
-                        {{ profiler_dump(query.response) }}
+                        <span id="query-item-{{ discr }}-{{ loop.index0 }}-response-dump">{{ profiler_dump(query.response) }}</span>
+                        <pre id="query-item-{{ discr }}-{{ loop.index0 }}-response-json" style="display: none">{{ query.response.getValue(true)|json_encode(128) }}</pre>
                     </td>
+                    <td style="text-align: right"><a href="#" onclick="toggleJson(event, 'query-item-{{ discr }}-{{ loop.index0 }}-response')">Show/hide JSON</a></td>
                 </tr>
             {% endif %}
             </tbody>
