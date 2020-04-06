@@ -2,6 +2,11 @@ Fazland - Elastica ODM Bundle
 =============================
 [![Build Status](https://travis-ci.com/fazland/elastica-odm-bundle.svg?branch=master)](https://travis-ci.com/fazland/elastica-odm-bundle)
 
+#### ⚠️ Warning
+
+This repository has been deprecated.  
+The development of this package will continue on https://github.com/refugis/elastica-odm-bundle.
+
 Symfony Bundle for [Elastica ODM](https://www.github.com/fazland/elastica-odm)
 
 Requirements
